@@ -3,10 +3,28 @@
     Created on : Oct 2, 2018, 10:52:27 AM
     Author     : Frank
 --%>
+<%@page import="java.util.TimerTask"%>
+<%@page import="java.util.Timer"%>
+<%@page import="java.util.Random"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="codefest.Calculations"%>
+<%@page import="Model.DAO"%>
+<%@page import="codefest.loadData"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+        loadData data = new loadData();
+        DAO dao = new DAO();
+        int steps = dao.getStepID().size();
+        List<Calculations> calList = new ArrayList<>();
+        for (int count = 0; count < steps; count++) {
+            calList.add(new Calculations());
+        }
+    %>
+
     <head>
         <title>Bar Chart</title>
 
@@ -21,44 +39,14 @@
                 -ms-user-select: none;
             }
         </style>
-    </head>
-    <body>
-
-        <br>
-        <div style="width:75%;">
-            <canvas id="canvas"></canvas>
-        </div>
-        <div style="width:75%;">
-            <canvas id="canvas-line-pro"></canvas>
-        </div>
-        <br>
-        
-
-        <div class="w3-top">
-            <div class="w3-row w3-large w3-light-grey">
-                <div class="w3-col s3">
-                    <a href="#" class="w3-button w3-block">Home</a>
-                </div>
-                <div class="w3-col s3">
-                    <a href="#plans" class="w3-button w3-block">Plans</a>
-                </div>
-                <div class="w3-col s3">
-                    <a href="#about" class="w3-button w3-block">About</a>
-                </div>
-                <div class="w3-col s3">
-                    <a href="#contact" class="w3-button w3-block">Contact</a>
-                </div>
-            </div>
-        </div>
-
         <script>
-            var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var steps = <%=dao.getStepID()%>;
             var color = Chart.helpers.color;
             var barChartData = {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: steps,
                 datasets: [{
-                        label: 'Dataset 1',
-                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                        label: 'Process Rate',
+                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
                         borderColor: window.chartColors.red,
                         borderWidth: 1,
                         data: [
@@ -66,18 +54,14 @@
                             randomScalingFactor(),
                             randomScalingFactor(),
                             randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
                             randomScalingFactor()
                         ]
                     }, {
-                        label: 'Dataset 2',
-                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                        label: 'Error Rate',
+                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
                         borderColor: window.chartColors.blue,
                         borderWidth: 1,
                         data: [
-                            randomScalingFactor(),
-                            randomScalingFactor(),
                             randomScalingFactor(),
                             randomScalingFactor(),
                             randomScalingFactor(),
@@ -90,24 +74,9 @@
             var config = {
                 type: 'line',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                    labels: steps,
                     datasets: [{
-                            label: 'My First dataset',
-                            backgroundColor: window.chartColors.red,
-                            borderColor: window.chartColors.red,
-                            data: [
-                                randomScalingFactor(),
-                                randomScalingFactor(),
-                                randomScalingFactor(),
-                                randomScalingFactor(),
-                                randomScalingFactor(),
-                                randomScalingFactor(),
-                                randomScalingFactor()
-                            ],
-                            fill: false,
-                        }, {
-                            label: 'My Second dataset',
-                            fill: false,
+                            label: 'Processing Rate',
                             backgroundColor: window.chartColors.blue,
                             borderColor: window.chartColors.blue,
                             data: [
@@ -119,6 +88,7 @@
                                 randomScalingFactor(),
                                 randomScalingFactor()
                             ],
+                            fill: false,
                         }]
                 },
                 options: {
@@ -140,14 +110,14 @@
                                 display: true,
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Month'
+                                    labelString: 'Step'
                                 }
                             }],
                         yAxes: [{
                                 display: true,
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Value'
+                                    labelString: 'Processing Rate'
                                 }
                             }]
                     }
@@ -175,11 +145,72 @@
                 window.myLine = new Chart(ctx, config);
             };
 
+            function update() {
+                config.data.datasets.forEach(function (dataset) {
+                    dataset.data = dataset.data.map(function () {
+                        return randomScalingFactor();
+                    });
 
+                });
 
+                window.myLine.update();
 
+                barChartData.datasets.forEach(function (dataset) {
+                    dataset.data = dataset.data.map(function () {
+                        return randomScalingFactor();
+                    });
 
-
+                });
+                
+                window.myBar.update();
+            }
+            function randomScalingFactor(){
+                
+                var noOfItem = Math.round(Math.random() * (1000-800)+800);
+                for (var x = 0; x < noOfItem; x++) {
+                    //Get IOT Device No
+                    var iotDevNo = Math.round(Math.random() * (steps-1)+1);
+                    //Get Received item error or not (error when value = 1)
+                    var num = Math.round(Math.random() * (5 - 1 + 1));
+                    if (num === 1) {
+                        //Increment each IOT Device error count
+                    }
+                    //Increment each IOT Device total count
+                }
+                console.log(noOfItem);
+                return noOfItem;
+            }
+            window.setInterval(
+                    function(){update()}
+                    , 1000);
         </script>
+    </head>
+    <body>
+
+        <br>
+        <div style="width:75%;">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div style="width:75%;">
+            <canvas id="canvas-line-pro"></canvas>
+        </div>
+        <div style="width:75%;">
+            <canvas id="canvas-line-error"></canvas>
+        </div>
+        <br>
+
+
+        <div class="w3-top">
+            <div class="w3-row w3-large w3-light-grey">
+                <div class="w3-col s3">
+                    <a href="ManagerHomeServlet" class="w3-button w3-block">Home</a>
+                </div>
+                <div class="w3-col s3">
+                    <a href="ManagerHomeServlet?command=View-Report" class="w3-button w3-block">Report</a>
+                </div>
+            </div>
+        </div>
+
+
     </body>
 </html>

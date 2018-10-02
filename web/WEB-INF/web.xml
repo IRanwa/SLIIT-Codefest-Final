@@ -8,6 +8,10 @@
         <servlet-name>ReportServlet</servlet-name>
         <servlet-class>Controller.ReportServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>employeeStats</servlet-name>
+        <servlet-class>Controller.employeeStats</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/HomeServlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ReportServlet</servlet-name>
         <url-pattern>/ReportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>employeeStats</servlet-name>
+        <url-pattern>/employeeStats</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

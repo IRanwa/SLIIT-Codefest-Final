@@ -11,14 +11,20 @@ package Model;
  */
 public class EmployeePerformance {
     String EmpID;
-    Double Eerror;
-    Double Eprocess;
+    double Eerror;
+    double Eprocess;
+    double errorbenchmark;
+    double processbenchmark;
 
-    public EmployeePerformance(String EmpID, Double Eerror, Double Eprocess) {
+    public EmployeePerformance(String EmpID, double Eerror, double Eprocess, double errorbenchmark, double processbenchmark) {
         this.EmpID = EmpID;
         this.Eerror = Eerror;
         this.Eprocess = Eprocess;
+        this.errorbenchmark = errorbenchmark;
+        this.processbenchmark = processbenchmark;
     }
+
+    
 
     public String getEmpID() {
         return EmpID;

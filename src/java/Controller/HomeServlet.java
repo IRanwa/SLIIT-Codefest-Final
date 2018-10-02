@@ -6,6 +6,7 @@ package Controller;
  * and open the template in the editor.
  */
 
+import Model.employeeStats;
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -94,6 +95,8 @@ public class HomeServlet extends HttpServlet {
         }
         
     }
+    
+   
 
     /**
      * Returns a short description of the servlet.

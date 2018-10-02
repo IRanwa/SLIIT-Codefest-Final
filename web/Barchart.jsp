@@ -58,7 +58,7 @@
         </style>
         <script>
             var date = new Date();
-            var steps = <%=dao.getStepID()%>;
+            var steps = <%=new Integer(request.getParameter("stepsCount"))%>;
             var errorPer = []; //1 Second error percentage
             var procRate = [];//1 Second processing rate
             var errorPer5min = []; //5 minutes error percentage
@@ -297,7 +297,7 @@
                 var noOfItem = Math.round(Math.random() * (1000 - 800) + 800);
                 for (var x = 0; x < noOfItem; x++) {
                     //Get IOT Device No
-                    var iotDevNo = Math.round(Math.random() * (<%=dao.getStepID().size()%> - 1) + 1);
+                    var iotDevNo = Math.round(Math.random() * (<%=new Integer(request.getParameter("stepsCount"))%> - 1) + 1);
                     //Get Received item error or not (error when value = 1)
                     var num = Math.round(Math.random() * (5 - 1) + 1);
                     if (num === 1) {

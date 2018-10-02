@@ -4,6 +4,7 @@
     Author     : Frank
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -45,6 +46,34 @@ body {
     <th>Error Rate</th>
     
   </tr>
+                  
+                  <c:forEach var="lis" items="${plist}">
+                      
+                      
+                       <tr>
+                    <td>${lis.EmpID}</td>
+                    <td>${lis.Eerror}
+                    <c:if test="${lis.Eerror}>${lis.errorbenckmark}">
+                       *
+                       </c:if>
+                    </td>
+                    <td>${lis.Eprocess}
+                    <c:if test="${lis.Eprocess}<${lis.processbenchmark}">
+                    *
+                    </c:if>
+                    </td>
+                    
+                    
+                   
+                    
+                </tr>
+            </c:forEach>
+
+  <c:out value="${avg}"/>
+  
+      
+      
+ 
   <tr>
    
     <td>Emp No1  &#10045;</td>

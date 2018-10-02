@@ -50,7 +50,7 @@ public class ManagerHomeServlet extends HttpServlet {
         }
         switch(command){
             case "HomePage":
-               // getRealTime(request, response);
+                
                 break;
             case "View-Report":
                 break;

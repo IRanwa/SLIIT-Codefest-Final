@@ -6,10 +6,11 @@ package Controller;
  * and open the template in the editor.
  */
 
-
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import Model.DAO;
+import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Frank
  */
-public class HomeServlet extends HttpServlet {
+public class ManagerHomeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,7 +44,17 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String command = request.getParameter("command");
+        if(command==null){
+            command = "HomePage";
+        }
+        switch(command){
+            case "HomePage":
+                
+                break;
+            case "View-Report":
+                break;
+        }
     }
 
     /**
@@ -59,44 +70,6 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         
     }
-    
-    public void devicestatus(HttpServletRequest request, HttpServletResponse response){
-        String d1 = (String) request.getAttribute("D1state");
-        String d2 = (String) request.getAttribute("D2state");
-        String d3 = (String) request.getAttribute("D3state");
-        String d4 = (String) request.getAttribute("D4state");
-        String d5 = (String) request.getAttribute("D5state");
-        String msgbad="bad";
-        String msgok="ok";
-        if(d1 == null || d1 == ""){
-            request.setAttribute("health", msgbad);
-        }else{
-            request.setAttribute("health", msgok);
-        }
-        if(d2 == null || d2 == ""){
-        request.setAttribute("health", msgbad);
-        }else{
-            request.setAttribute("health", msgok);
-        }
-        if(d3 == null || d3 == ""){
-        request.setAttribute("health", msgbad);
-        }else{
-            request.setAttribute("health", msgok);
-        }
-        if(d4 == null || d4 == ""){
-        request.setAttribute("health", msgbad);
-        }else{
-            request.setAttribute("health", msgok);
-        }
-        if(d5 == null || d5 == ""){
-        request.setAttribute("health", msgbad);
-        }else{
-            request.setAttribute("health", msgok);
-        }
-        
-    }
-    
-   
 
     /**
      * Returns a short description of the servlet.
@@ -107,6 +80,7 @@ public class HomeServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
- 
 
+
+    
 }

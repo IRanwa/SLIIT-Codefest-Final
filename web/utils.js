@@ -127,6 +127,8 @@ window.chartColors = {
 	window.randomScalingFactor = function() {
 		return Math.round(Samples.utils.rand(-100, 100));
 	};
+        
+        
 
 	// INITIALIZATION
 

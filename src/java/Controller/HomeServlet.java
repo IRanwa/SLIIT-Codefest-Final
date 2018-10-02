@@ -6,6 +6,7 @@ package Controller;
  * and open the template in the editor.
  */
 
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -57,6 +58,42 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         
     }
+    
+    public void devicestatus(HttpServletRequest request, HttpServletResponse response){
+        String d1 = (String) request.getAttribute("D1state");
+        String d2 = (String) request.getAttribute("D2state");
+        String d3 = (String) request.getAttribute("D3state");
+        String d4 = (String) request.getAttribute("D4state");
+        String d5 = (String) request.getAttribute("D5state");
+        String msgbad="bad";
+        String msgok="ok";
+        if(d1 == null || d1 == ""){
+            request.setAttribute("health", msgbad);
+        }else{
+            request.setAttribute("health", msgok);
+        }
+        if(d2 == null || d2 == ""){
+        request.setAttribute("health", msgbad);
+        }else{
+            request.setAttribute("health", msgok);
+        }
+        if(d3 == null || d3 == ""){
+        request.setAttribute("health", msgbad);
+        }else{
+            request.setAttribute("health", msgok);
+        }
+        if(d4 == null || d4 == ""){
+        request.setAttribute("health", msgbad);
+        }else{
+            request.setAttribute("health", msgok);
+        }
+        if(d5 == null || d5 == ""){
+        request.setAttribute("health", msgbad);
+        }else{
+            request.setAttribute("health", msgok);
+        }
+        
+    }
 
     /**
      * Returns a short description of the servlet.
@@ -67,5 +104,7 @@ public class HomeServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    
 
 }

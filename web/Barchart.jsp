@@ -26,6 +26,27 @@
 		<canvas id="canvas"></canvas>
 	</div>
         
+        
+        <br>
+        <div style="width:75%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<div class="w3-top">
+  <div class="w3-row w3-large w3-light-grey">
+    <div class="w3-col s3">
+      <a href="#" class="w3-button w3-block">Home</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#plans" class="w3-button w3-block">Plans</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#about" class="w3-button w3-block">About</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#contact" class="w3-button w3-block">Contact</a>
+    </div>
+  </div>
+</div>
         <script>
 		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var color = Chart.helpers.color;
@@ -141,6 +162,10 @@
 
 			window.myBar.update();
 		});
+                
+                
+                
+                
 	</script>
     </body>
 </html>

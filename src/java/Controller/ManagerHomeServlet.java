@@ -7,6 +7,8 @@ package Controller;
  */
 
 import Model.DAO;
+import Model.DailyProcess;
+import codefest.loadData;
 import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,6 +43,8 @@ public class ManagerHomeServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    loadData load;
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,11 +53,16 @@ public class ManagerHomeServlet extends HttpServlet {
             command = "HomePage";
         }
         switch(command){
-            case "HomePage":
+            case "1HourRecords":
+                store1HourRecord(request, response);
                 
                 break;
             case "View-Report":
                 break;
+            default:
+                load = new loadData();
+                request.setAttribute("stepsCount", load.getDailyProcess().getSteps().size());
+                request.getRequestDispatcher("Barchart.jsp").forward(request, response);
         }
     }
 
@@ -81,5 +90,8 @@ public class ManagerHomeServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-
+    public void store1HourRecord(HttpServletRequest request, HttpServletResponse response){
+        DailyProcess dailyProcess = load.getDailyProcess();
+        System.out.println(dailyProcess.getShifts());
+    }
 }

@@ -319,4 +319,22 @@ public class DAO {
         }
         return null;
     }
+    
+    public List<String> getShiftList(Shiftlist shift){
+        List<String> StepID = new ArrayList<>();
+        try {
+
+            PreparedStatement ps = connection.prepareStatement("select id from shiftreference where Date=? and Shift=? ");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("Step");
+                StepID.add(id);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return StepID;
+    }
 }

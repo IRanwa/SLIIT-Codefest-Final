@@ -26,8 +26,7 @@ public class readFromCSV {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
-            //File file = new File(formatter.format(date) + ".csv");
-            File file = new File("2016-09-19.csv");
+            File file = new File("2016-09-21.csv");
 
             if (file.exists()) {
                 Scanner sc = new Scanner(file);
@@ -51,6 +50,8 @@ public class readFromCSV {
                     count++;
                 }
                 return shiftdata;
+            }else{
+                System.out.println("file not found");
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(readFromCSV.class.getName()).log(Level.SEVERE, null, ex);

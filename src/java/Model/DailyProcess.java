@@ -6,6 +6,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,7 +17,8 @@ public class DailyProcess {
     private String date;
     private ArrayList<String> Shifts;
     private ArrayList<String> Steps;
-    
+    private List<Integer> shiftRefIdList;
+
     public DailyProcess(String date, ArrayList<String> Shifts, ArrayList<String> Steps) {
         this.date = date;
         this.Shifts = Shifts;
@@ -35,6 +37,10 @@ public class DailyProcess {
         return Steps;
     }
 
+    public List<Integer> getShiftRefIdList() {
+        return shiftRefIdList;
+    }
+
     public void setDate(String date) {
         this.date = date;
     }
@@ -46,5 +52,8 @@ public class DailyProcess {
     public void setSteps(ArrayList<String> Steps) {
         this.Steps = Steps;
     }
-    
+
+    public void setShiftRefIdList(List<Integer> shiftRefIdList) {
+        this.shiftRefIdList = shiftRefIdList;
+    }
 }

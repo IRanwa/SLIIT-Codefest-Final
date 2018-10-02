@@ -331,10 +331,10 @@
                 return highestIndex;
             }
             window.setInterval(function () {
-                update1Second()
+                update1Second();
             }, 1000);
             window.setInterval(function () {
-                update5Minute()
+                update5Minute();
             }, 1000 * 60 * 5);
         </script>
 

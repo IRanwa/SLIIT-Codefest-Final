@@ -189,15 +189,18 @@ public class DAO {
         Double avg = null;
         try {
 
-            String sql ="select avg(reporttable.ProcessRate)\n" +
-                    "from employeestats inner join reporttable \n" +
-                    "on employeestats.id = reporttable.shiftRefId where EmpID="+ empID+ " and "
-                    + "reporttable.EndTime between "+filter.getStartDate() + " and "+ filter.getEndDate();
+            String sql ="select avg(reporttable.ProcessRate) " +
+                    "from employeestats inner join reporttable " +
+                    "on employeestats.id = reporttable.shiftRefId where EmpID=? and reporttable.EndTime between ? and ?";
             
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1,empID);
+            ps.setString(2,filter.getStartDate());
+            ps.setString(3,filter.getEndDate());
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            avg= rs.getDouble(1);
+            while(rs.next()){
+            return  rs.getDouble(1);
+            }
             
             
         } catch (SQLException ex) {
@@ -212,15 +215,20 @@ public class DAO {
         try {
            
             
-            String sql ="select avg(reporttable.`Error`)\n" +
-                    "from employeestats inner join reporttable \n" +
-                    "on employeestats.id = reporttable.shiftRefId where EmpID="+ empID+ " and "
-                    + "reporttable.EndTime between "+filter.getStartDate() + " and "+ filter.getEndDate();
+            String sql ="select avg(reporttable.Error) " +
+                    "from employeestats inner join reporttable " +
+                    "on employeestats.id = reporttable.shiftRefId where EmpID=? and "
+                    + "reporttable.EndTime between ? and ?";
             
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, empID);
+            ps.setString(2, filter.getStartDate());
+            ps.setString(3, filter.getEndDate());
+            
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            avg= rs.getDouble(1);
+            while(rs.next()){
+                return rs.getDouble(1);
+            }
             
             
         } catch (SQLException ex) {
@@ -235,7 +243,7 @@ public class DAO {
     
     try {
             String sql = "Select avg(Error) as errorPer, avg(ProcessRate) as processRate from reporttable "
-                    + "where EndTime between " + filter.getStartDate() + " and " + filter.getEndDate()+")";
+                    + "where EndTime between " + filter.getStartDate() + " and " + filter.getEndDate();
 //            if (!filter.getStepId().equals("All")) {
 //                sql += "and shiftRefId IN (select id from shiftreference where Step=" + filter.getStepId() + ") ";
 //            }

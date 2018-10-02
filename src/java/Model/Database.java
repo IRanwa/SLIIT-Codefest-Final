@@ -20,7 +20,7 @@ public class Database {
     public static Connection getConnection() {
         String URL = "jdbc:mysql://localhost:3306/codefest";
         String username = "root";
-        String password = "Imesh@77";
+        String password = "underthekeyboard";
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = (Connection) DriverManager.getConnection(URL, username, password);

@@ -3,8 +3,6 @@
     Created on : Oct 2, 2018, 10:52:27 AM
     Author     : Frank
 --%>
-<%@page import="java.util.TimerTask"%>
-<%@page import="java.util.Timer"%>
 <%@page import="java.util.Random"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -39,6 +37,26 @@
                     -webkit-user-select: none;
                     -ms-user-select: none;
                 }
+                .popup-dialog{
+                    display:none;
+                    position: fixed;
+                    z-index: 1;
+                    left:0;
+                    right:0;
+                    top:0;
+                    padding-top: 100px;
+                    height:100%;
+                    width:100%;
+                    overflow:auto;
+                    background-color: grey;
+                    background-color: rgba(0,0,0,0.5);
+                }
+
+                .close:hover,.close:focus{
+                    text-decoration: none;
+                    cursor: pointer;
+                    color: black;
+                }
             </style>
             <script>
                 var steps = <%=dao.getStepID()%>;
@@ -56,6 +74,21 @@
                     errorPer1hour[x] = 0;
                     procRate1hour[x] = 0;
                 }
+
+                function openPopup(){
+                    var modal = document.getElementById("popup-message");
+                    modal.style.display = "block";
+                }
+                function closePopup() {
+                    var modal = document.getElementById("popup-message");
+                    modal.style.display = "none";
+                }
+                window.onclick = function (event) {
+                    var modal = document.getElementById("popup-message");
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                };
         </script>
     </head>
     <body>
@@ -90,14 +123,14 @@
                 datasets: [{
                         label: 'Process Rate',
                         backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.red,
+                        borderColor: window.chartColors.blue,
                         borderWidth: 1,
                         data: [0, 0, 0, 0, 0
                         ]
                     }, {
                         label: 'Error Rate',
                         backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.blue,
+                        borderColor: window.chartColors.red,
                         borderWidth: 1,
                         data: [0, 0, 0, 0, 0
                         ]
@@ -113,8 +146,7 @@
                             label: 'Processing Rate',
                             backgroundColor: window.chartColors.blue,
                             borderColor: window.chartColors.blue,
-                            data: [0, 0, 0, 0, 0
-                            ],
+                            data: [0, 0, 0, 0, 0],
                             fill: false,
                         }]
                 },
@@ -223,6 +255,7 @@
 
             function update1Second() {
                 updateBarChart();
+                checkCriticalLevel();
                 for (var count = 0; count < errorPer.length; count++) {
                     //alert(errorRate[count]);
                     barChartData.datasets[0].data[count] = procRate[count];
@@ -234,14 +267,18 @@
                     procRate[count] = 0;
                     errorPer[count] = 0;
                 }
+
                 window.barChart.update();
             }
 
             function update5Minute() {
+                //var ctx = document.getElementById('linechart-pro').getContext('2d');
+                
+                //var data = {data: [65]};
+                //window.lineChartPro = new Chart(ctx, data);
                 for (var count = 0; count < procRate5min.length; count++) {
-                    lineChartProData.datasets[0].data[0] = 10;
-                    //lineChartErrorData.datasets[0].data[count] = errorPer5min[count];
-                    
+                    lineChartProData.data.datasets[0].data[count] = procRate5min[count];
+                    lineChartErrorData.data.datasets[0].data[count] = errorPer5min[count];
                     procRate1hour[count] += procRate5min[count];
                     errorPer1hour[count] += errorPer5min[count];
 
@@ -250,7 +287,7 @@
                 }
 
                 window.lineChartPro.update();
-                //window.lineChartError.update();
+                window.lineChartError.update();
             }
 
             function updateBarChart() {
@@ -269,13 +306,46 @@
                     //Increment each IOT Device total count
                 }
             }
+
+            function checkCriticalLevel() {
+                for (var count = 0; count < procRate.length; count++) {
+                    if (procRate[count] < 120) {
+                        var highest = getHighestProIndex();
+                        var message = "Stage " + (count + 1) + " production is low. Please shift person from Stage " + highest;
+                        document.getElementById("message").innerHTML = message;
+                        openPopup();
+                        break;
+                    }
+                }
+            }
+
+            function getHighestProIndex() {
+                var highestIndex;
+                var highest = 0;
+                for (var count = 0; count < procRate.length; count++) {
+                    if (procRate[count] > highest) {
+                        highestIndex = count + 1;
+                        highest = procRate[count];
+                    }
+                }
+                return highestIndex;
+            }
             window.setInterval(function () {
                 update1Second()
             }, 1000);
             window.setInterval(function () {
                 update5Minute()
-            }, 1000 * 2);
+            }, 1000 * 60 * 5);
         </script>
+
+        <!-- Popup Confirm Box -->
+        <div id="popup-message" class="popup-dialog">
+            <div class="w3-container w3-round w3-white w3-padding w3-animate-top" style="max-width:400px; margin: 1% 35%">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <p class="w3-large w3-text-red" id="message"></p>
+            </div>
+        </div>
+        <!-- Popup Confirm Box  End -->
 
     </body>
 </html>

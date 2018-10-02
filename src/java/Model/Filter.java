@@ -11,10 +11,11 @@ package Model;
  */
 public class Filter {
 
-    private final String startDate;
-    private final String endDate;
+
+    private String startDate;
+    private String endDate;
     private final String stepId;
-    private final String aggTime;
+    private String aggTime;
     private final String empName;
     
     public Filter(String startDate, String endDate, String stepId, String aggTime, String empName) {
@@ -29,9 +30,19 @@ public class Filter {
         return startDate;
     }
 
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+    
+
     public String getEndDate() {
         return endDate;
     }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    
 
     public String getStepId() {
         return stepId;
@@ -40,6 +51,11 @@ public class Filter {
     public String getAggTime() {
         return aggTime;
     }
+
+    public void setAggTime(String aggTime) {
+        this.aggTime = aggTime;
+    }
+    
 
     public String getEmpName() {
         return empName;

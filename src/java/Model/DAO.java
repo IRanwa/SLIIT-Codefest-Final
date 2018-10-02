@@ -72,6 +72,8 @@ public class DAO {
     }
 
     public List<Integer> addShiftDetails(DailyProcess dailyProc) {
+        
+        long startTime = System.currentTimeMillis();
         List<Integer> shiftRefIdList = new ArrayList<>();
         try {
             ArrayList<String> shiftsList = dailyProc.getShifts();
@@ -90,11 +92,17 @@ public class DAO {
                     }
                 }
             }
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
             return shiftRefIdList;
+            
+          
         } catch (SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return shiftRefIdList;
+        
+        
     }
 
     public boolean addEmployeeStats(List<Integer> shiftRefIdList, ArrayList<Shiftlist> shiftData) {

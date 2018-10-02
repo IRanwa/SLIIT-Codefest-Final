@@ -7,7 +7,6 @@ package Controller;
  */
 
 import Model.DAO;
-import com.google.gson.Gson;
 import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,7 +50,7 @@ public class ManagerHomeServlet extends HttpServlet {
         }
         switch(command){
             case "HomePage":
-                getRealTime(request, response);
+               // getRealTime(request, response);
                 break;
             case "View-Report":
                 break;
@@ -82,13 +81,5 @@ public class ManagerHomeServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void getRealTime(HttpServletRequest request, HttpServletResponse response) {
-        DAO dao = new DAO();
-        Gson gson = new Gson();
-        List<String> shiftRefIdList = dao.getStepID();
-        String json = gson.toJson(shiftRefIdList);
-        request.setAttribute("dataset", json);
-    }
 
-    
 }

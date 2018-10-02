@@ -8,32 +8,37 @@ package Model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author USER
  */
 public class Database {
-    
-    public static Connection getConnection(){
+
+    public static Connection getConnection() {
         String URL = "jdbc:mysql://localhost:3306/codefest";
         String username = "root";
         String password = "Imesh@77";
-        try{
+        try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = (Connection) DriverManager.getConnection(URL,username, password);
+            Connection con = (Connection) DriverManager.getConnection(URL, username, password);
             return con;
-        }catch(ClassNotFoundException | SQLException ex){
-            System.out.println("Database.getConnection() Error ---> "+ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Database.getConnection() Error ---> " + ex.getMessage());
+            return null;
+        } catch (SQLException ex) {
+            System.out.println("Database.getConnection() Error ---> " + ex.getMessage());
             return null;
         }
     }
-    
-    public static void close(Connection con){
-        try{
+
+    public static void close(Connection con) {
+        try {
             con.close();
-        }catch(Exception ex){
-            
+        } catch (Exception ex) {
+
         }
     }
 }

@@ -8,14 +8,18 @@ package Controller;
 
 import Model.DAO;
 import Model.Database;
+import Model.EmployeePerformance;
 import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.ir.RuntimeNode;
 
 /**
  *
@@ -45,16 +49,20 @@ public class ManagerHomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
         String command = request.getParameter("command");
         if(command==null){
             command = "HomePage";
         }
         switch(command){
-            case "HomePage":
-                
+            case "Table":
+                RequestDispatcher dispatcher = request.getRequestDispatcher("employeeStats");
+                dispatcher.forward(request, response);
                 break;
             case "View-Report":
                 break;
+                
         }
     }
 
@@ -69,8 +77,13 @@ public class ManagerHomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Database d=new Database();
-        request.setAttribute("dataerror", d.getError());
+//        Database d=new Database();
+//        request.setAttribute("dataerror", d.getError());
+//        employeeStats emst = new employeeStats();
+//        List<EmployeePerformance> plist = emst.checkBenchmark(); //new ArrayList<String>();
+//        request.setAttribute("plist", plist);
+//        RequestDispatcher view=getServletContext().getRequestDispatcher("/Tables.jsp"); 
+//        view.forward(request, response);
     }
 
     /**

@@ -108,10 +108,10 @@
         <div class="w3-top">
             <div class="w3-row w3-large w3-light-grey">
                 <div class="w3-col s3">
-                    <a href="ManagerHomeServlet" class="w3-button w3-block">Home</a>
+                    <a href="HomeServlet?command=Table" class="w3-button w3-block">Employee Performance</a>
                 </div>
                 <div class="w3-col s3">
-                    <a href="ManagerHomeServlet?command=View-Report" class="w3-button w3-block">Report</a>
+                    <a href="HomeServlet?command=View-Report" class="w3-button w3-block">Report</a>
                 </div>
             </div>
         </div>

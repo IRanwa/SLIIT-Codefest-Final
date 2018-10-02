@@ -41,7 +41,7 @@ body {
 <table>
   <tr>
     <th>Employee ID</th>
-    <th>Problem percentage</th>
+    <th>Production Percentage</th>
     <th>Error Rate</th>
     
   </tr>

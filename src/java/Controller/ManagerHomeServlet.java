@@ -7,6 +7,7 @@ package Controller;
  */
 
 import Model.DAO;
+import Model.Database;
 import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,7 +69,8 @@ public class ManagerHomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        Database d=new Database();
+        request.setAttribute("dataerror", d.getError());
     }
 
     /**

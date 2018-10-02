@@ -16,6 +16,8 @@ import java.util.logging.Logger;
  * @author USER
  */
 public class Database {
+    
+    public static String error=null;
 
     public static Connection getConnection() {
         String URL = "jdbc:mysql://localhost:3306/codefest";
@@ -30,6 +32,7 @@ public class Database {
             return null;
         } catch (SQLException ex) {
             System.out.println("Database.getConnection() Error ---> " + ex.getMessage());
+            error ="Database disconeccted";
             return null;
         }
     }
@@ -40,5 +43,10 @@ public class Database {
         } catch (Exception ex) {
 
         }
+    }
+    
+    public String getError(){
+        
+        return error;
     }
 }

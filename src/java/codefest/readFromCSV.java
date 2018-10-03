@@ -26,7 +26,7 @@ public class readFromCSV {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
-            File file = new File("2016-09-21.csv");
+            File file = new File(formatter.format(date)+".csv");
 
             if (file.exists()) {
                 Scanner sc = new Scanner(file);

@@ -8,7 +8,9 @@ package Controller;
 import Model.DAO;
 import Model.DailyProcess;
 import Model.Database;
+import Model.Filter;
 import Model.Report;
+import Model.Stats;
 import codefest.loadData;
 import java.io.IOException;
 import java.text.ParseException;
@@ -63,12 +65,17 @@ public class ManagerHomeServlet extends HttpServlet {
         switch (command) {
             case "1HourRecords":
                 store1HourRecord(request, response);
-
+                break;
             case "Table":
                 RequestDispatcher dispatcher = request.getRequestDispatcher("employeeStats");
                 dispatcher.forward(request, response);
                 break;
             case "View-Report":
+                DAO dao = new DAO();
+                request.setAttribute("steps", dao.getStepID());
+                getEmployeeList(request, response);
+                request.getRequestDispatcher("reports.jsp").include(request, response);
+                dao.close();
                 break;
             default:
                 load = new loadData();
@@ -171,4 +178,26 @@ public class ManagerHomeServlet extends HttpServlet {
         }
         return -1;
     }
+    
+    private void getEmployeeList(HttpServletRequest request, HttpServletResponse response){
+        DAO dao = new DAO();
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String Stepid = request.getParameter("Stepid");
+        if(Stepid==null){
+            Stepid = "All";
+        }
+        String timePeriod = request.getParameter("timePeriod");
+        Filter filter = new Filter(startDate, endDate, Stepid, timePeriod, "All");
+        System.out.println(filter.getStartDate());
+        System.out.println(filter.getEndDate());
+        System.out.println(filter.getStepId());
+        System.out.println(filter.getAggTime());
+        System.out.println(filter.getEmpName());
+        List<String> records = dao.getEmpName(filter);
+        request.setAttribute("empList", records);
+        System.out.println("Size : "+records.size());
+        dao.close();
+    }
+    
 }

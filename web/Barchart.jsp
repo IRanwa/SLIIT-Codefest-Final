@@ -281,7 +281,7 @@
                     procRate[count] = 0;
                     errorPer[count] = 0;
                 }
-
+                
                 window.barChart.update();
 
             }
@@ -304,6 +304,7 @@
             function update1Hour() {
                 window.open("HomeServlet?command=1HourRecords" +
                         "&steps=" + steps + "&errorList=" + errorPer1hour + "&procList=" + procRate1hour + "&startTime=" + startTime);
+                startTime = date.getTime();
             }
 
             function update6Hour() {

@@ -165,21 +165,7 @@ public class DAO {
 
         List<String> EmpName = new ArrayList<>();
         try {
-            String sql;
-            if (filter!=null) {
-                sql = "select * from employee "
-                        + "where EmpID IN (select EmpID from employeestats "
-                        + "where id IN (select shiftRefId from reporttable ";
-                if (!filter.getStepId().equals("All")) {
-                    sql = sql + "where shiftRefId IN (select id from shiftreference "
-                            + "where Step= " + filter.getStepId() + ") and EndTime between " + filter.getStartDate() + " and " + filter.getEndDate() + "))";
-                } else {
-                    sql = sql + ") and EndTime between " + filter.getStartDate() + " and " + filter.getEndDate() + "))";
-                }
-            }else{
-                sql = "select * from employee";
-            }
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement("Select * from employee");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -252,30 +238,6 @@ public class DAO {
     try {
             String sql = "Select avg(Error) as errorPer, avg(ProcessRate) as processRate from reporttable "
                     + "where EndTime between " + filter.getStartDate() + " and " + filter.getEndDate();
-//            if (!filter.getStepId().equals("All")) {
-//                sql += "and shiftRefId IN (select id from shiftreference where Step=" + filter.getStepId() + ") ";
-//            }
-//            if (!filter.getEmpName().equals("All")) {
-//                sql += "and shiftRefId IN (select id from employeestatus where "
-//                        + "EmpID IN (select EmpID from employee where EmpName=" + filter.getEmpName() + ")) ";
-//            }
-//
-//            switch (filter.getAggTime()) {
-//                case "YEAR":
-//                    sql += "GROUP by MONTH(EndTime)";
-//                    break;
-//                case "Monthly":
-//                    sql += "GROUP by MONTH(EndTime)";
-//                    break;
-//                case "Weekly":
-//                    sql += "GROUP by WEEK(EndTime)";
-//                    break;
-//                case "Daily":
-//                    sql += "GROUP by DATE(EndTime)";
-//                    break;
-//                default:
-//                    sql += "GROUP by HOUR(EndTime)";
-//            }
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -295,33 +257,7 @@ public class DAO {
     public List<Stats> getReportDetails(Filter filter) {
         List<Stats> statsList = new ArrayList<>();
         try {
-            String sql = "Select avg(Error) as errorPer, avg(ProcessRate) as processRate from reporttable "
-                    + "where EndTime between " + filter.getStartDate() + " and " + filter.getEndDate();
-            if (!filter.getStepId().equals("All")) {
-                sql += "and shiftRefId IN (select id from shiftreference where Step=" + filter.getStepId() + ") ";
-            }
-            if (!filter.getEmpName().equals("All")) {
-                sql += "and shiftRefId IN (select id from employeestatus where "
-                        + "EmpID IN (select EmpID from employee where EmpName=" + filter.getEmpName() + ")) ";
-            }
-
-            switch (filter.getAggTime()) {
-                case "YEAR":
-                    sql += "GROUP by MONTH(EndTime)";
-                    break;
-                case "Monthly":
-                    sql += "GROUP by MONTH(EndTime)";
-                    break;
-                case "Weekly":
-                    sql += "GROUP by WEEK(EndTime)";
-                    break;
-                case "Daily":
-                    sql += "GROUP by DATE(EndTime)";
-                    break;
-                default:
-                    sql += "GROUP by HOUR(EndTime)";
-            }
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement("select * from reporttable where ");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 double errorRate = rs.getDouble("errorPer");
@@ -333,7 +269,7 @@ public class DAO {
         } catch (SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return statsList;
     }
     
     public List<String> getShiftList(Shiftlist shift){

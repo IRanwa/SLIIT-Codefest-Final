@@ -32,9 +32,6 @@ public class employeeStats extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        
-       
         List<EmployeePerformance> plist = checkBenchmark();
         request.setAttribute("plist", plist);
         RequestDispatcher dispatcher = request.getRequestDispatcher("Tables.jsp");

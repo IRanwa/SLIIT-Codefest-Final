@@ -11,18 +11,18 @@
 <%@page import="codefest.loadData"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
 <!DOCTYPE html>
 <html>
     <%
-        int steps = new Integer(request.getParameter("stepsCount"));
+        DAO dao = new DAO();
+        int steps = dao.getStepID().size();
         List<Calculations> calList = new ArrayList<>();
         for (int count = 0; count < steps; count++) {
             calList.add(new Calculations());
         }
     %>
-    
+
     <head>
         <title>Bar Chart</title>
         <script src="../../../dist/Chart.bundle.js"></script>
@@ -58,7 +58,7 @@
         </style>
         <script>
             var date = new Date();
-            var steps = <%=new Integer(request.getParameter("stepsCount"))%>;
+            var steps = <%=dao.getStepID()%>;
             var errorPer = []; //1 Second error percentage
             var procRate = [];//1 Second processing rate
             var errorPer5min = []; //5 minutes error percentage
@@ -93,6 +93,11 @@
     <body>
 
         <br>
+        <br>
+        <div class="w3-margin" style="margin: 100px;">
+            <button onclick="startTimer()" class="w3-button  w3-round w3-black">Start</button>
+            <button onclick="update6Hour()" class="w3-button  w3-round w3-black">Stop</button>
+        </div>
         <div class="w3-margin" style="width:90%">
             <canvas id="barchart"></canvas>
         </div>
@@ -116,6 +121,13 @@
         </div>
         <script>
             var color = Chart.helpers.color;
+            var d = new Date();
+            var startTime = d.getTime();
+            
+            var timer1Sec;
+            var timer5Min;
+            var timer1Hr;
+            var timer6Hr;
             //barchart dataset (Every 1 second)
             var barChartData = {
                 labels: steps,
@@ -290,14 +302,22 @@
             }
 
             function update1Hour() {
-                window.open("HomeServlet?command=1HourRecords&steps="+steps+"&errorList="+errorPer1hour+"&procList="+procRate1hour);
+                window.open("HomeServlet?command=1HourRecords" +
+                        "&steps=" + steps + "&errorList=" + errorPer1hour + "&procList=" + procRate1hour + "&startTime=" + startTime);
+            }
+
+            function update6Hour() {
+                clearInterval(timer1Sec);
+                clearInterval(timer5Min);
+                clearInterval(timer1Hr);
+                clearInterval(timer16Hr);
             }
 
             function receiveMessages() {
                 var noOfItem = Math.round(Math.random() * (1000 - 800) + 800);
                 for (var x = 0; x < noOfItem; x++) {
                     //Get IOT Device No
-                    var iotDevNo = Math.round(Math.random() * (<%=new Integer(request.getParameter("stepsCount"))%> - 1) + 1);
+                    var iotDevNo = Math.round(Math.random() * (<%=steps%> - 1) + 1);
                     //Get Received item error or not (error when value = 1)
                     var num = Math.round(Math.random() * (5 - 1) + 1);
                     if (num === 1) {
@@ -332,17 +352,24 @@
                 }
                 return highestIndex;
             }
-            window.setInterval(function () {
-                update1Second()
-            }, 1000);
-            window.setInterval(function () {
-                update5Minute()
-            }, 1000 * 60 * 5);
-            window.setInterval(function () {
-                update1Hour()
-            }, 1000 * 60 * 60);
+
+            function startTimer() {
+                 timer1Sec = window.setInterval(function () {
+                    update1Second();
+                }, 1000);
+                 timer5Min = window.setInterval(function () {
+                    update5Minute();
+                }, 1000 * 60 * 5);
+                 timer1Hr = window.setInterval(function () {
+                    update1Hour()
+                }, 1000 * 60 * 60);
+                 timer6Hr = window.setInterval(function () {
+                    update6Hour()
+                }, 1000 * 60 * 60 * 6);
+            }
+
         </script>
-        
+
         <!-- Popup Confirm Box -->
         <div id="popup-message" class="popup-dialog">
             <div class="w3-container w3-round w3-white w3-padding w3-animate-top" style="max-width:400px; margin: 1% 35%">

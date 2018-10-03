@@ -8,91 +8,70 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
+    <head>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
 
-tr:nth-child(even) {
-    background-color:#f2f2f2;
-}
+            tr:nth-child(even) {
+                background-color:#f2f2f2;
+            }
 
-th{
-    background-color: green;
-}
+            th{
+                background-color: green;
+            }
 
-body {
-    font-size: 20px;
-}
-</style>
-</head>
-<body>
+            body {
+                font-size: 20px;
+            }
+        </style>
+    </head>
+    <body>
 
-<h2>Table</h2>
+        <h2>Table</h2>
 
-<table>
-  <tr>
-    <th>Employee ID</th>
-    <th>Production Percentage</th>
-    <th>Error Rate</th>
-    
-  </tr>
-                  
-                  <c:forEach var="lis" items="${plist}">
-                      
-                      
-                       <tr>
-                    <td>${lis.EmpID}</td>
-                    <td>${lis.Eerror}
-                    <c:if test="${lis.Eerror}>${lis.errorbenckmark}">
-                       *
-                       </c:if>
+        <table>
+            <tr>
+                <th>Employee ID</th>
+                <th>Production Percentage</th>
+                <th>Error Rate</th>
+
+            </tr>
+
+            <c:forEach var="lis" items="${plist}">
+
+
+                <tr>
+                    <td>${lis.empID}</td>
+                    <td>${lis.eError}
+                        <c:if test="${lis.eError}>${lis.errorbenchmark}">
+                            *
+                        </c:if>
                     </td>
-                    <td>${lis.Eprocess}
-                    <c:if test="${lis.Eprocess}<${lis.processbenchmark}">
-                    *
-                    </c:if>
+                    <td>${lis.eProcess}
+                        <c:if test="${lis.eProcess}<${lis.processbenchmark}">
+                            *
+                        </c:if>
                     </td>
-                    
-                    
-                   
-                    
+
+
+
+
                 </tr>
             </c:forEach>
 
-  <c:out value="${avg}"/>
-  
-      
-      
- 
-  <tr>
-   
-    <td>Emp No1  &#10045;</td>
-    <td></td>
-    <td></td>
-    
-  </tr>
-  <tr>
-    
-    <td>Emp No2 &#10045; </td>
-    <td></td>
-    <td></td>
-  </tr>
-  
-  
- 
- 
-</table>
+            <c:out value="${avg}"/>
+        </table>
 
-</body>
+    </body>
 </html>
 

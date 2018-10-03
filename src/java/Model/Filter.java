@@ -14,9 +14,16 @@ public class Filter {
 
     private String startDate;
     private String endDate;
-    private final String stepId;
+    private  String stepId;
     private String aggTime;
-    private final String empName;
+    private  String empName;
+
+    public Filter(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+    
+   
     
     public Filter(String startDate, String endDate, String stepId, String aggTime, String empName) {
         this.startDate = startDate;
@@ -25,6 +32,12 @@ public class Filter {
         this.aggTime = aggTime;
         this.empName = empName;
     }
+
+    public Filter() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 
     public String getStartDate() {
         return startDate;

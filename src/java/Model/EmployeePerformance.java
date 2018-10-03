@@ -10,45 +10,62 @@ package Model;
  * @author Pamuditha
  */
 public class EmployeePerformance {
-    String EmpID;
-    double Eerror;
-    double Eprocess;
+    String empID;
+    double eError;
+    double eProcess;
     double errorbenchmark;
     double processbenchmark;
 
-    public EmployeePerformance(String EmpID, double Eerror, double Eprocess, double errorbenchmark, double processbenchmark) {
-        this.EmpID = EmpID;
-        this.Eerror = Eerror;
-        this.Eprocess = Eprocess;
+    public EmployeePerformance(String empID, double eError, double eProcess, double errorbenchmark, double processbenchmark) {
+        this.empID = empID;
+        this.eError = eError;
+        this.eProcess = eProcess;
         this.errorbenchmark = errorbenchmark;
         this.processbenchmark = processbenchmark;
     }
 
-    
-
     public String getEmpID() {
-        return EmpID;
+        return empID;
     }
 
-    public void setEmpID(String EmpID) {
-        this.EmpID = EmpID;
+    public double geteError() {
+        return eError;
     }
 
-    public Double getEerror() {
-        return Eerror;
+    public double geteProcess() {
+        return eProcess;
     }
 
-    public void setEerror(Double Eerror) {
-        this.Eerror = Eerror;
+    public double getErrorbenchmark() {
+        return errorbenchmark;
     }
 
-    public Double getEprocess() {
-        return Eprocess;
+    public double getProcessbenchmark() {
+        return processbenchmark;
     }
 
-    public void setEprocess(Double Eprocess) {
-        this.Eprocess = Eprocess;
+    public void setEmpID(String empID) {
+        this.empID = empID;
     }
+
+    public void seteError(double eError) {
+        this.eError = eError;
+    }
+
+    public void seteProcess(double eProcess) {
+        this.eProcess = eProcess;
+    }
+
+    public void setErrorbenchmark(double errorbenchmark) {
+        this.errorbenchmark = errorbenchmark;
+    }
+
+    public void setProcessbenchmark(double processbenchmark) {
+        this.processbenchmark = processbenchmark;
+    }
+
+    
+    
     
     
 }

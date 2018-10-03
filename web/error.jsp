@@ -8,19 +8,28 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
-
-<h2></h2>
-
-<button onclick="myFunction()">Submit</button>
-
-
-      
-<script>
+    <body>
+   
+   <c:forEach var="err" items="${dataerror}">
+                                 
+                         <tr>
+                    
+                    
+                    <c:if test="${err.equals(database_erroe)}">
+                       
+                        <% myFunction(); %>
+                      
+                       </c:if>
+                    </td>   
+                    
+                </tr>
+            </c:forEach>
+                
+                <script>
 function myFunction() {
-    alert("Database disconnected");
+    alert("Database error");
 }
 </script>
-
-
+ 
+ </body>
 </html>

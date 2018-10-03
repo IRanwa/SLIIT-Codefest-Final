@@ -17,6 +17,15 @@ public class Filter {
     private  String stepId;
     private String aggTime;
     private  String empName;
+    private  String empID;
+
+    public String getEmpID() {
+        return empID;
+    }
+
+    public void setEmpID(String empID) {
+        this.empID = empID;
+    }
 
     public Filter(String startDate, String endDate) {
         this.startDate = startDate;
@@ -25,12 +34,12 @@ public class Filter {
     
    
     
-    public Filter(String startDate, String endDate, String stepId, String aggTime, String empName) {
+    public Filter(String startDate, String endDate, String stepId, String aggTime, String empID) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.stepId = stepId;
         this.aggTime = aggTime;
-        this.empName = empName;
+        this.empID = empID;
     }
 
     public Filter() {

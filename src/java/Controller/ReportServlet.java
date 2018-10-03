@@ -29,6 +29,8 @@ public class ReportServlet extends HttpServlet {
         String command = request.getParameter("command");
         switch(command){
             case "Get-Employees":
+                DAO dao = new DAO();
+                request.setAttribute("steps", dao.getStepID());
                 getEmployeeList(request, response);
                 request.getRequestDispatcher("reports.jsp").include(request, response);
         }

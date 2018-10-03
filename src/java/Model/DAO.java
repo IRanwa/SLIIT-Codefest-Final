@@ -22,11 +22,11 @@ public class DAO {
 
     private final Connection connection;
 
-    public DAO()  {
+    public DAO() {
         connection = Database.getConnection();
     }
-    
-    public void close(){
+
+    public void close() {
         try {
             connection.close();
         } catch (SQLException ex) {
@@ -46,13 +46,14 @@ public class DAO {
         }
         return false;
     }
-    public List<String> allEmployees(){
-        
+
+    public List<String> allEmployees() {
+
         List<String> empID = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement("select EmpID from employee");
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 empID.add(rs.getString("EmpID"));
             }
         } catch (SQLException ex) {
@@ -80,7 +81,7 @@ public class DAO {
     }
 
     public List<Integer> addShiftDetails(DailyProcess dailyProc) {
-        
+
         long startTime = System.currentTimeMillis();
         List<Integer> shiftRefIdList = new ArrayList<>();
         try {
@@ -103,14 +104,12 @@ public class DAO {
             long stopTime = System.currentTimeMillis();
             long elapsedTime = stopTime - startTime;
             return shiftRefIdList;
-            
-          
+
         } catch (SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return shiftRefIdList;
-        
-        
+
     }
 
     public boolean addEmployeeStats(List<Integer> shiftRefIdList, ArrayList<Shiftlist> shiftData) {
@@ -178,64 +177,63 @@ public class DAO {
 
         return EmpName;
     }
-    public Double getEmployeeProcessAverage(String empID, Filter filter){
-    
+
+    public Double getEmployeeProcessAverage(String empID, Filter filter) {
+
         Double avg = null;
         try {
 
-            String sql ="select avg(reporttable.ProcessRate) " +
-                    "from employeestats inner join reporttable " +
-                    "on employeestats.id = reporttable.shiftRefId where EmpID=? and reporttable.EndTime between ? and ?";
-            
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1,empID);
-            ps.setString(2,filter.getStartDate());
-            ps.setString(3,filter.getEndDate());
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-            return  rs.getDouble(1);
-            }
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        return avg;
-    
-    }
-    public Double getEmployeeErrorAverage(String empID, Filter filter){
-         Double avg = null;
-        try {
-           
-            
-            String sql ="select avg(reporttable.Error) " +
-                    "from employeestats inner join reporttable " +
-                    "on employeestats.id = reporttable.shiftRefId where EmpID=? and "
-                    + "reporttable.EndTime between ? and ?";
-            
+            String sql = "select avg(reporttable.ProcessRate) "
+                    + "from employeestats inner join reporttable "
+                    + "on employeestats.id = reporttable.shiftRefId where EmpID=? and reporttable.EndTime between ? and ?";
+
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, empID);
             ps.setString(2, filter.getStartDate());
             ps.setString(3, filter.getEndDate());
-            
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 return rs.getDouble(1);
             }
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
+        return avg;
+
+    }
+
+    public Double getEmployeeErrorAverage(String empID, Filter filter) {
+        Double avg = null;
+        try {
+
+            String sql = "select avg(reporttable.Error) "
+                    + "from employeestats inner join reporttable "
+                    + "on employeestats.id = reporttable.shiftRefId where EmpID=? and "
+                    + "reporttable.EndTime between ? and ?";
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, empID);
+            ps.setString(2, filter.getStartDate());
+            ps.setString(3, filter.getEndDate());
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getDouble(1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return avg;
     }
-    
-    public List<Stats> getAverages(Filter filter){
-    List<Stats> avg  = new ArrayList<>();
-    
-    try {
+
+    public List<Stats> getAverages(Filter filter) {
+        List<Stats> avg = new ArrayList<>();
+
+        try {
             String sql = "Select avg(Error) as errorPer, avg(ProcessRate) as processRate from reporttable "
                     + "where EndTime between " + filter.getStartDate() + " and " + filter.getEndDate();
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -253,11 +251,35 @@ public class DAO {
         return null;
     }
 
-
     public List<Stats> getReportDetails(Filter filter) {
         List<Stats> statsList = new ArrayList<>();
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from reporttable where ");
+            String sql = "select avg(Error) as errorPer, avg(ProcessRate) as processRate from reporttable where shiftRefId"
+                    + "IN (select es.id from employeestats as es "
+                    + "left join shiftreference as sr on sr.id=es.id where es.EmpID=? and sr.Step=?) "
+                    + "and EndTime between ? and ? ";
+            switch(filter.getAggTime()){
+                case "Yearly":
+                    sql += "Group by YEAR(EndTime)";
+                    break;
+                case "Monthly":
+                    sql += "Group by MONTH(EndTime)";
+                    break;
+                case "Weekly":
+                    sql += "Group by WEEK(EndTime)";
+                    break;
+                case "Daily":
+                    sql += "Group by DATE(EndTime)";
+                    break;
+                default:
+                    sql += "Group by HOUR(EndTime)";
+                    break;
+            }
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, filter.getEmpID());
+            ps.setString(2, filter.getStepId());
+            ps.setString(3, filter.getStartDate());
+            ps.setString(4, filter.getEndDate());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 double errorRate = rs.getDouble("errorPer");
@@ -271,8 +293,8 @@ public class DAO {
         }
         return statsList;
     }
-    
-    public List<String> getShiftList(Shiftlist shift){
+
+    public List<String> getShiftList(Shiftlist shift) {
         List<String> StepID = new ArrayList<>();
         try {
 
